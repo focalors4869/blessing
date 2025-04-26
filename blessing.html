@@ -1,0 +1,121 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
+  <title>Happy Anniversary</title>
+  <style>
+    body {
+      margin: 0;
+      background-color: pink;
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      justify-content: center;
+      height: 100vh;
+      font-family: "Arial", sans-serif;
+      text-align: center;
+      overflow: hidden;
+    }
+
+    h1 {
+      font-size: 2.5rem;
+      color: white;
+      margin-bottom: 20px;
+      text-shadow: 1px 1px 3px rgba(0,0,0,0.2);
+    }
+
+    .heart-button {
+      background: none;
+      border: none;
+      cursor: pointer;
+      animation: pulse 1.5s infinite;
+    }
+
+    .heart-button img {
+      width: 150px;
+    }
+
+    @keyframes pulse {
+      0% { transform: scale(1); }
+      50% { transform: scale(1.1); }
+      100% { transform: scale(1); }
+    }
+
+    #imageDisplay {
+      max-width: 90%;
+      max-height: 80%;
+      display: none;
+      border-radius: 20px;
+      box-shadow: 0 4px 15px rgba(0,0,0,0.2);
+    }
+
+    .fade-in {
+      animation: fade 0.5s ease-in;
+    }
+
+    @keyframes fade {
+      from { opacity: 0; }
+      to { opacity: 1; }
+    }
+
+    #endMessage {
+      display: none;
+      color: white;
+      font-size: 2rem;
+      text-shadow: 1px 1px 3px rgba(0,0,0,0.3);
+    }
+  </style>
+</head>
+<body>
+
+  <div id="startScreen">
+    <h1>สุขสันต์วันครบรอบ 💕</h1>
+    <button class="heart-button" onclick="startMemoryShow()">
+      <img src="heart.png" alt="heart"/>
+    </button>
+  </div>
+
+  <img id="imageDisplay" src="" alt="memory"/>
+  <div id="endMessage">สุขสันต์วันครบรอบ 1 เดือนนะ<br>
+รักที่สุดเลย<br>
+💖</div>
+
+  <audio id="bgMusic" src="love.mp3" preload="auto"></audio>
+
+  <script>
+    const images = [];
+    for (let i = 1; i <= 5; i++) { // เปลี่ยนเลขตามจำนวนภาพจริง
+      images.push(`img${i}.jpg`);
+    }
+
+    let currentImage = 0;
+    const imageDisplay = document.getElementById("imageDisplay");
+    const endMessage = document.getElementById("endMessage");
+    const bgMusic = document.getElementById("bgMusic");
+
+    function startMemoryShow() {
+      document.getElementById("startScreen").style.display = "none";
+      imageDisplay.style.display = "block";
+      bgMusic.play();
+
+      function showNextImage() {
+        if (currentImage < images.length) {
+          imageDisplay.src = images[currentImage];
+          imageDisplay.classList.add("fade-in");
+          setTimeout(() => {
+            imageDisplay.classList.remove("fade-in");
+            currentImage++;
+            setTimeout(showNextImage, 500); // จังหวะก่อนแสดงภาพถัดไป
+          }, 5000); // ระยะเวลาแต่ละภาพ (5 วิ)
+        } else {
+          imageDisplay.style.display = "none";
+          endMessage.style.display = "block";
+        }
+      }
+
+      showNextImage();
+    }
+  </script>
+</body>
+</html>
